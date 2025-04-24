@@ -66,7 +66,7 @@ public class ContainerDiagram
         var styles = Project.ViewSet.Configuration.Styles;
         
         styles.Add(new ElementStyle(nameof(LandingPage)) {Background = "#006A1C", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
-        styles.Add(new ElementStyle(nameof(WebApp)) {Background = "#0000E4", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
+        styles.Add(new ElementStyle(nameof(WebApp)) {Background = "#D96030", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(Api)) {Background = "#FF0D17", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
     }
     

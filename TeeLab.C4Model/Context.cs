@@ -53,9 +53,9 @@ public class ContextDiagram
         styles.Add(new ElementStyle(nameof(TeeLab)) {Background = "#FF1420", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(Cloudinary)) {Background = "#0D2A4B", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(Stripe)) {Background = "#4145BC", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
-        styles.Add(new ElementStyle(nameof(User)) {Background = "#0000E4", Shape = Shape.Person, Color = "#FFFFFF"});
-        styles.Add(new ElementStyle(nameof(Designer)) {Background = "#006A1C", Shape = Shape.Person, Color = "#FFFFFF"});
-        styles.Add(new ElementStyle(nameof(Manufacturer)) { Background = "#700066", Shape = Shape.Person, Color = "#FFFFFF" });
+        styles.Add(new ElementStyle(nameof(User)) {Background = "#514861", Shape = Shape.Person, Color = "#FFFFFF"});
+        styles.Add(new ElementStyle(nameof(Designer)) {Background = "#3A679F", Shape = Shape.Person, Color = "#FFFFFF"});
+        styles.Add(new ElementStyle(nameof(Manufacturer)) { Background = "#86B3EA", Shape = Shape.Person, Color = "#FFFFFF" });
     }
     private void Publish()
     {

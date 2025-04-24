@@ -19,11 +19,11 @@ public class C4
     
     public C4()
     {
-        ApiKey = "f9f9ec3d-ce88-4c21-ba44-1dc7877243d4";
-        ApiSecret = "57e7eac0-da22-4b4d-b090-3cd86a3b2677";
-        WorkspaceId = 101506;
-        WorkspaceName = "TeeLab - Open Source";
-        WorkspaceDescription = "TeeLav - C4 Model";
+        ApiKey = "a0152e34-512b-4265-8932-53575ce5a8dd";
+        ApiSecret = "60ac86dd-6aa7-4e32-bf0e-a7cf05145f44";
+        WorkspaceId = 101371;
+        WorkspaceName = "TeeLab - Web Applications";
+        WorkspaceDescription = "TeeLab - C4 Model";
 
         Project = new StructurizrClient(ApiKey, ApiSecret);
         Workspace = new Workspace(WorkspaceName, WorkspaceDescription);
