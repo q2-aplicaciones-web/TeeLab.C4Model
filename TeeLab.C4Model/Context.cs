@@ -13,6 +13,8 @@ public class ContextDiagram
     public SoftwareSystem TeeLab { get; set; }
     public SoftwareSystem Cloudinary { get; set; }
     public SoftwareSystem Stripe { get; set; }
+    
+    public SoftwareSystem Supabase { get; set; }
 
     public ContextDiagram(C4 project)
     {
@@ -31,6 +33,9 @@ public class ContextDiagram
         Cloudinary.AddTags(nameof(Cloudinary));
         Stripe = Project.Model.AddSoftwareSystem("Stripe", "A cloud service to manage payments.");
         Stripe.AddTags(nameof(Stripe));
+        // Supabase = Project.Model.AddSoftwareSystem("Supabase", "A cloud service to manage data."); 
+        Supabase = Project.Model.AddSoftwareSystem("Supabase", "A cloud service to manage data.");
+        Supabase.AddTags(nameof(Supabase));
     }
 
     public void Generate()
@@ -41,6 +46,7 @@ public class ContextDiagram
         
         TeeLab.Uses(Cloudinary, "Use Cloudinary to buy their clothes.");
         TeeLab.Uses(Stripe, "Use Stripe to buy their clothes.");
+        TeeLab.Uses(Supabase, "Use Supabase to buy their clothes.");
         
         ApplyStyles();
         Publish();
@@ -51,6 +57,7 @@ public class ContextDiagram
         var styles = Project.ViewSet.Configuration.Styles;
         
         styles.Add(new ElementStyle(nameof(TeeLab)) {Background = "#FF1420", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
+        styles.Add(new ElementStyle(nameof(Supabase)) {Background = "#006A1C", Shape = Shape.Cylinder, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(Cloudinary)) {Background = "#0D2A4B", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(Stripe)) {Background = "#4145BC", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(User)) {Background = "#514861", Shape = Shape.Person, Color = "#FFFFFF"});
