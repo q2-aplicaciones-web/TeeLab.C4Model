@@ -32,6 +32,7 @@ public class DesignStudio
         Application.Uses(Infrastructure, "Use");
 
         Infrastructure.Uses(Context.Cloudinary, "Use");
+        Infrastructure.Uses(Context.Supabase, "Use");
         
         ApplyStyles();
         Publish();
@@ -50,5 +51,6 @@ public class DesignStudio
         view.Add(Domain);
         view.Add(Interfaces);
         view.Add(Context.Cloudinary);
+        view.Add(Context.Supabase);
     }
 }
