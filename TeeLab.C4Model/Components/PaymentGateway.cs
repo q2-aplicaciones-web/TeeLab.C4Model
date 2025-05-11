@@ -32,6 +32,7 @@ public class PaymentGateway
         Application.Uses(Infrastructure, "Use");
         
         Infrastructure.Uses(Context.Stripe,"Use");
+        Infrastructure.Uses(Context.Supabase, "Use");
         
         ApplyStyles();
         Publish();
@@ -50,5 +51,6 @@ public class PaymentGateway
         view.Add(Domain);
         view.Add(Interfaces);
         view.Add(Context.Stripe);
+        view.Add(Context.Supabase);
     }
 }
