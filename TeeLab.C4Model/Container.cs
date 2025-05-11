@@ -12,7 +12,8 @@ public class ContainerDiagram
     public Container Api { get; set; }
     
     public Container OrderProcessing { get; set; }
-    public Container DesignStudio { get; set; }
+    
+    public Container DesignLab { get; set; }
     public Container PaymentGateway { get; set; }
     public Container OrderFulfillment { get; set; }
     public Container ProductCatalog { get; set; }
@@ -38,8 +39,8 @@ public class ContainerDiagram
         OrderProcessing = Context.TeeLab.AddContainer("Order Processing", "Handles order validation and workflow orchestration using ASP.NET Core.", "ASP.NET Core, C#");
         OrderProcessing.AddTags(nameof(OrderProcessing));
 
-        DesignStudio = Context.TeeLab.AddContainer("Design Studio", "Manages design creation, editing, and blueprint logic using ASP.NET Core.", "ASP.NET Core, C#");
-        DesignStudio.AddTags(nameof(DesignStudio));
+        DesignLab = Context.TeeLab.AddContainer("Design Studio", "Manages design creation, editing, and blueprint logic using ASP.NET Core.", "ASP.NET Core, C#");
+        DesignLab.AddTags(nameof(DesignLab));
 
         PaymentGateway = Context.TeeLab.AddContainer("Payment Gateway", "Handles payment processing and integration with external services using ASP.NET Core.", "ASP.NET Core, C#");
         PaymentGateway.AddTags(nameof(PaymentGateway));
