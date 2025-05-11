@@ -17,6 +17,8 @@ public class ContainerDiagram
     public Container OrderFulfillment { get; set; }
     public Container ProductCatalog { get; set; }
     public Container UserManagement { get; set; }
+    
+    public Container SinglePageApplication { get; set; }
 
     
     public ContainerDiagram(ContextDiagram context, C4 project)
@@ -24,38 +26,52 @@ public class ContainerDiagram
         Context = context ?? throw new ArgumentNullException(nameof(context));
         Project = project ?? throw new ArgumentNullException(nameof(project));
         
-        LandingPage = Context.TeeLab.AddContainer("Landing Page", "The landing page of TeeLab.", "HTML, CSS, JS");
+        LandingPage = Context.TeeLab.AddContainer("Landing Page", "Initial HTML/CSS/JS entry point for the TeeLab platform.", "HTML, CSS, JS");
         LandingPage.AddTags(nameof(LandingPage));
-        WebApp = Context.TeeLab.AddContainer("Web App", "The web app of TeeLab.", "Angular 19");
+
+        WebApp = Context.TeeLab.AddContainer("Web App", "Single-page frontend built with Vue.js 3 for user interaction and navigation.", "Vue.js 3");
         WebApp.AddTags(nameof(WebApp));
-        Api = Context.TeeLab.AddContainer("API", "The API of TeeLab.", "Spring Boot - Java 24");
+
+        Api = Context.TeeLab.AddContainer("API", "ASP.NET Core Web API that manages business logic, database access, and third-party integrations.", "ASP.NET Core, C#");
         Api.AddTags(nameof(Api));
-        
-        OrderProcessing = Context.TeeLab.AddContainer("Order Processing", "Handles order processing and management.", "Spring Boot - Java 24");
+
+        OrderProcessing = Context.TeeLab.AddContainer("Order Processing", "Handles order validation and workflow orchestration using ASP.NET Core.", "ASP.NET Core, C#");
         OrderProcessing.AddTags(nameof(OrderProcessing));
-        DesignStudio = Context.TeeLab.AddContainer("Design Studio", "Handles design studio and management.", "Spring Boot - Java 24");
+
+        DesignStudio = Context.TeeLab.AddContainer("Design Studio", "Manages design creation, editing, and blueprint logic using ASP.NET Core.", "ASP.NET Core, C#");
         DesignStudio.AddTags(nameof(DesignStudio));
-        PaymentGateway = Context.TeeLab.AddContainer("Payment Gateway", "Handles payment processing and management.", "Spring Boot - Java 24");
+
+        PaymentGateway = Context.TeeLab.AddContainer("Payment Gateway", "Handles payment processing and integration with external services using ASP.NET Core.", "ASP.NET Core, C#");
         PaymentGateway.AddTags(nameof(PaymentGateway));
-        OrderFulfillment = Context.TeeLab.AddContainer("Order Fulfillment", "Handles order fulfillment and management.", "Spring Boot - Java 24");
+
+        OrderFulfillment = Context.TeeLab.AddContainer("Order Fulfillment", "Coordinates the production, packaging, and shipment of orders using ASP.NET Core.", "ASP.NET Core, C#");
         OrderFulfillment.AddTags(nameof(OrderFulfillment));
-        ProductCatalog = Context.TeeLab.AddContainer("Product Catalog", "Handles product catalog and management.", "Spring Boot - Java 24");
+
+        ProductCatalog = Context.TeeLab.AddContainer("Product Catalog", "Provides product listings, filtering, and search using ASP.NET Core.", "ASP.NET Core, C#");
         ProductCatalog.AddTags(nameof(ProductCatalog));
-        UserManagement = Context.TeeLab.AddContainer("User Management", "Handles user management and authentication.", "Spring Boot - Java 24");
+
+        UserManagement = Context.TeeLab.AddContainer("User Management", "Manages user authentication, roles, and access control using ASP.NET Core.", "ASP.NET Core, C#");
         UserManagement.AddTags(nameof(UserManagement));
+
+        SinglePageApplication = Context.TeeLab.AddContainer("Single Page Application", "SPA frontend built with Vue.js 3 to handle routing and dynamic views.", "Vue.js 3");
+        SinglePageApplication.AddTags(nameof(SinglePageApplication));
+
     }
 
     public void Generate()
     {
-        Context.User.Uses(LandingPage, "Use TeeLab to buy their clothes.");
-        Context.Designer.Uses(WebApp, "Use TeeLab to design their clothes.");
-        Context.Manufacturer.Uses(WebApp, "Use TeeLab to manufacture their clothes.");
-        
-        Api.Uses(Context.Cloudinary, "Use Cloudinary to create a cloud service to manage images.");
-        Api.Uses(Context.Stripe, "Use Stripe to create a cloud service to manage payments.");
-        
-        LandingPage.Uses(WebApp, "Redirect to the web app.");
-        WebApp.Uses(Api, "Use the API to manage the data.");
+        Context.User.Uses(LandingPage, "Accesses the landing page to explore the platform.");
+        Context.Designer.Uses(WebApp, "Uses the Vue.js web app to create and manage garment designs.");
+        Context.Manufacturer.Uses(WebApp, "Uses the Vue.js web app to manage production tasks.");
+
+        Api.Uses(Context.Cloudinary, "Connects to Cloudinary for image storage and delivery.");
+        Api.Uses(Context.Stripe, "Connects to Stripe to handle secure payment transactions.");
+        Api.Uses(Context.Supabase, "Connects to Supabase for data storage and real-time access.");
+
+        LandingPage.Uses(WebApp, "Redirects users to the Vue.js web application.");
+        WebApp.Uses(SinglePageApplication, "Loads and runs the Vue.js single-page application interface.");
+        SinglePageApplication.Uses(Api, "Communicates with the ASP.NET Core API to retrieve and manage data.");
+
         
         ApplyStyles();
         Publish();
@@ -68,6 +84,7 @@ public class ContainerDiagram
         styles.Add(new ElementStyle(nameof(LandingPage)) {Background = "#006A1C", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(WebApp)) {Background = "#D96030", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
         styles.Add(new ElementStyle(nameof(Api)) {Background = "#FF0D17", Shape = Shape.RoundedBox, Color = "#FFFFFF"});
+        styles.Add(new ElementStyle(nameof(SinglePageApplication)) { Background = "#408dd5", Shape = Shape.WebBrowser, Color = "#FFFFFF" });;
     }
     
     private void Publish()
@@ -78,5 +95,6 @@ public class ContainerDiagram
         view.Add(LandingPage);
         view.Add(WebApp);
         view.Add(Api);
+        view.Add(SinglePageApplication);
     }
 }
