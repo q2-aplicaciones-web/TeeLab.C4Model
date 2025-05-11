@@ -9,7 +9,7 @@ public class ApiComponent
     private ContextDiagram Context { get; }
     private ContainerDiagram Container { get; }
 
-    public Component DesignStudio { get; set; }
+    public Component DesignLab { get; set; }
     public Component BlueprintManagement { get; set; }
     public Component ProductCatalog { get; set; }
     public Component OrderProcessing { get; set; }
@@ -25,8 +25,8 @@ public class ApiComponent
     Container = container ?? throw new ArgumentNullException(nameof(container));
     Project = project ?? throw new ArgumentNullException(nameof(project));
 
-    DesignStudio = Container.Api.AddComponent(
-        "Design Studio",
+    DesignLab = Container.Api.AddComponent(
+        "Design Lab",
         "Allows Garment Designers to create visual products (Blueprints), add layers (text/images), configure them, and preview them.",
         "ASP.NET Core, C#");
 
@@ -75,14 +75,16 @@ public class ApiComponent
     public void Generate()
     {
         // Internal RESTful routes
-        DesignStudio.Uses(BlueprintManagement, "Calls /api/blueprints");
-        DesignStudio.Uses(UserManagement, "Calls /api/users/current");
-        DesignStudio.Uses(Shared, "Calls /api/shared/design");
+        DesignLab.Uses(BlueprintManagement, "Calls /api/blueprints");
+        DesignLab.Uses(UserManagement, "Calls /api/users/current");
+        DesignLab.Uses(Shared, "Calls /api/shared/design");
 
         BlueprintManagement.Uses(Shared, "Calls /api/shared/blueprints");
 
         ProductCatalog.Uses(Shared, "Calls /api/shared/products");
         ProductCatalog.Uses(Context.Cloudinary, "Calls Cloudinary API");
+        DesignLab.Uses(Context.Cloudinary, "Calls Cloudinary API");
+        BlueprintManagement.Uses(Context.Cloudinary, "Calls Cloudinary API");
 
         OrderProcessing.Uses(ProductCatalog, "Calls /api/products");
         OrderProcessing.Uses(UserManagement, "Calls /api/users/{id}");
