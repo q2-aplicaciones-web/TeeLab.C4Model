@@ -32,6 +32,7 @@ public class ProductCatalog
         Application.Uses(Infrastructure, "Use");
         
         Infrastructure.Uses(Context.Cloudinary, "Use");
+        Infrastructure.Uses(Context.Supabase, "Use");
         
         ApplyStyles();
         Publish();
@@ -49,6 +50,7 @@ public class ProductCatalog
         view.Add(Application);
         view.Add(Domain);
         view.Add(Interfaces);
+        view.Add(Context.Supabase);
         
         view.Add(Context.Cloudinary);
     }
