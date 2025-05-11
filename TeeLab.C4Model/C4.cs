@@ -42,8 +42,8 @@ public class C4
         api.Generate();
         var orderProcessing = new OrderProcessing(context, container, this);
         orderProcessing.Generate();
-        var designStudio = new DesignStudio(context, container, this);
-        designStudio.Generate();
+        var designLab = new DesignLab(context, container, this);
+        designLab.Generate();
         var paymentGateway = new PaymentGateway(context, container, this);
         paymentGateway.Generate();
         var orderFulfillment = new OrderFulfillment(context, container, this);
