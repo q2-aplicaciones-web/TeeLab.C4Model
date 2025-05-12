@@ -68,6 +68,7 @@ public class ContainerDiagram
         Api.Uses(Context.Cloudinary, "Connects to Cloudinary for image storage and delivery.");
         Api.Uses(Context.Stripe, "Connects to Stripe to handle secure payment transactions.");
         Api.Uses(Context.Supabase, "Connects to Supabase for data storage and real-time access.");
+        SinglePageApplication.Uses(Context.Supabase, "Connects to Supabase for data storage and real-time access.");
 
         LandingPage.Uses(WebApp, "Redirects users to the Vue.js web application.");
         WebApp.Uses(SinglePageApplication, "Loads and runs the Vue.js single-page application interface.");
