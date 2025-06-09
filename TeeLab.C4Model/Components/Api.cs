@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Structurizr;
 using Component = Structurizr.Component;
 
@@ -6,63 +5,99 @@ namespace TeeLab.C4Model.Components;
 
 public class ApiComponent
 {
-    private C4 Project { get; set; }
-    private ContextDiagram Context { get; set; }
-    private ContainerDiagram Container { get; set; }
-    
-    public Component OrderProcessing { get; set; }
-    public Component DesignStudio { get; set; }
-    public Component PaymentGateway { get; set; }
-    public Component OrderFulfillment { get; set; }
+    private C4 Project { get; }
+    private ContextDiagram Context { get; }
+    private ContainerDiagram Container { get; }
+
+    public Component DesignLab { get; set; }
     public Component ProductCatalog { get; set; }
+    public Component OrderProcessing { get; set; }
+    public Component OrderFulfillment { get; set; }
+    public Component PaymentGateway { get; set; }
     public Component UserManagement { get; set; }
-    
+    public Component AccessAndSecurity { get; set; }
     public Component Shared { get; set; }
 
-
-
     public ApiComponent(ContextDiagram context, ContainerDiagram container, C4 project)
-    {
-        Context = context ?? throw new ArgumentNullException(nameof(context));
-        Container = container ?? throw new ArgumentNullException(nameof(container));
-        Project = project ?? throw new ArgumentNullException(nameof(project));
-        
-        OrderProcessing = Container.Api.AddComponent("Order Processing", "Handles order processing and management.");
-        OrderProcessing.AddTags(nameof(OrderProcessing));
-        DesignStudio = Container.Api.AddComponent("Design Studio", "Handles design studio and management.");
-        DesignStudio.AddTags(nameof(DesignStudio));
-        PaymentGateway = Container.Api.AddComponent("Payment Gateway", "Handles payment processing and management.");   
-        PaymentGateway.AddTags(nameof(PaymentGateway));
-        OrderFulfillment = Container.Api.AddComponent("Order Fulfillment", "Handles order fulfillment and management.");
-        OrderFulfillment.AddTags(nameof(OrderFulfillment));
-        ProductCatalog = Container.Api.AddComponent("Product Catalog", "Handles product catalog and management.");
-        ProductCatalog.AddTags(nameof(ProductCatalog));
-        UserManagement = Container.Api.AddComponent("User Management", "Handles user management and authentication.");
-        UserManagement.AddTags(nameof(UserManagement));
-        
-        Shared = Container.Api.AddComponent("Shared", "Handles shared components and management.");
-        Shared.AddTags(nameof(Shared));
-        
-    }
+{
+    Context = context ?? throw new ArgumentNullException(nameof(context));
+    Container = container ?? throw new ArgumentNullException(nameof(container));
+    Project = project ?? throw new ArgumentNullException(nameof(project));
+
+    DesignLab = Container.Api.AddComponent(
+        "Design Lab",
+        "Allows Garment Designers to create visual products (Blueprints), add layers (text/images), configure them, and preview them.",
+        "ASP.NET Core, C#");
+
+    ProductCatalog = Container.Api.AddComponent(
+        "Product Catalog",
+        "Displays finished products for users to explore, filter, and select what to buy.",
+        "ASP.NET Core, C#");
+
+    OrderProcessing = Container.Api.AddComponent(
+        "Order Processing",
+        "Manages checkout and order lifecycle including validation and preparation.",
+        "ASP.NET Core, C#");
+
+    OrderFulfillment = Container.Api.AddComponent(
+        "Order Fulfillment",
+        "Handles production, packaging, and delivery after order processing.",
+        "ASP.NET Core, C#");
+
+    PaymentGateway = Container.Api.AddComponent(
+        "Payment Gateway",
+        "Processes payments, validates transactions, and generates receipts.",
+        "ASP.NET Core, C#");
+
+    UserManagement = Container.Api.AddComponent(
+        "User Management",
+        "Manages user accounts, roles, and profile data.",
+        "ASP.NET Core, C#");
+
+    AccessAndSecurity = Container.Api.AddComponent(
+        "Access & Security",
+        "Manages authentication, tokens, and route protection.",
+        "ASP.NET Core, C#");
+
+    Shared = Container.Api.AddComponent(
+        "Shared",
+        "Cross-cutting logic shared across modules (e.g., validation, logging).",
+        "ASP.NET Core, C#");
+}
+
 
     public void Generate()
     {
-        OrderFulfillment.Uses(OrderProcessing, "Use");
-        OrderProcessing.Uses(UserManagement, "Use");
-        OrderProcessing.Uses(ProductCatalog, "Use");
-        OrderProcessing.Uses(PaymentGateway, "Use");
-        DesignStudio.Uses(UserManagement, "Use");
+        // Internal RESTful routes
+        DesignLab.Uses(UserManagement, "Calls /api/users/current");
+        DesignLab.Uses(Shared, "Calls /api/shared/design");
 
-        OrderProcessing.Uses(Shared, "Use");
-        DesignStudio.Uses(Shared, "Use");
-        OrderFulfillment.Uses(Shared, "Use");
-        ProductCatalog.Uses(Shared, "Use");
-        UserManagement.Uses(Shared, "Use");
-        PaymentGateway.Uses(Shared, "Use");
+        ProductCatalog.Uses(Shared, "Calls /api/shared/products");
+        ProductCatalog.Uses(Context.Cloudinary, "Calls Cloudinary API");
+        DesignLab.Uses(Context.Cloudinary, "Calls Cloudinary API");
 
-        PaymentGateway.Uses(Context.Stripe, "Use");
-        DesignStudio.Uses(Context.Cloudinary, "Use");
-        ProductCatalog.Uses(Context.Cloudinary, "Use");
+        OrderProcessing.Uses(ProductCatalog, "Calls /api/products");
+        OrderProcessing.Uses(UserManagement, "Calls /api/users/{id}");
+        OrderProcessing.Uses(PaymentGateway, "Calls /api/payment/checkout");
+        OrderProcessing.Uses(Shared, "Calls /api/shared/orders");
+
+        OrderFulfillment.Uses(OrderProcessing, "Calls /api/orders/{id}/status");
+        OrderFulfillment.Uses(Shared, "Calls /api/shared/fulfillment");
+
+        PaymentGateway.Uses(Context.Stripe, "Calls Stripe API");
+        PaymentGateway.Uses(Shared, "Calls /api/shared/payments");
+
+        UserManagement.Uses(Shared, "Calls /api/shared/users");
+
+        AccessAndSecurity.Uses(UserManagement, "Calls /api/users/validate");
+
+        // Supabase usage for persistence
+        ProductCatalog.Uses(Context.Supabase, "Reads catalog", "SQL via Supabase");
+        OrderProcessing.Uses(Context.Supabase, "Stores order state", "SQL via Supabase");
+        OrderFulfillment.Uses(Context.Supabase, "Reads logistics data", "SQL via Supabase");
+        UserManagement.Uses(Context.Supabase, "Stores user profiles", "SQL via Supabase");
+        AccessAndSecurity.Uses(Context.Supabase, "Uses Supabase Auth", "JWT / OAuth2");
+        PaymentGateway.Uses(Context.Supabase, "Stores transaction data", "SQL via Supabase");
 
         ApplyStyles();
         Publish();
@@ -71,14 +106,15 @@ public class ApiComponent
     public void ApplyStyles()
     {
         var styles = Project.ViewSet.Configuration.Styles;
-        styles.Add(new ElementStyle(Tags.Component) {Background = "#FFC142", Shape = Shape.Component});
+        styles.Add(new ElementStyle(Tags.Component) {Background = "#e6cc00", Shape = Shape.Component});
     }
 
     public void Publish()
     {
-        var view = Project.ViewSet.CreateComponentView(Container.Api, "TeeLab API Component View", "");
+        var view = Project.ViewSet.CreateComponentView(Container.Api, "TeeLab API Component View", "Component diagram for TeeLab API layer.");
         view.AddAllComponents();
         view.Add(Context.Cloudinary);
+        view.Add(Context.Supabase);
         view.Add(Context.Stripe);
     }
-}   
+}
